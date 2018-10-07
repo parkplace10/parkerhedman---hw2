@@ -1,0 +1,48 @@
+Sub medium()
+
+Dim i As Variant, lastrow As Variant, rownum As Variant, opening_price As Double, closing_price As Double
+
+Dim ws_count As Integer, w As Integer
+
+
+
+'count worksheets
+
+wscount = ThisWorkbook.Worksheets.Count
+
+
+
+For w = 1 To wscount
+
+Sheets(w).Activate
+
+lastrow = Cells(Rows.Count, 1).End(xlUp).Row
+
+rownum = 1
+
+    For i = 2 To lastrow
+        If Cells(i, 1) <> Cells(i - 1, 1) Then
+            rownum = rownum + 1
+            opening_price = Cells(i, 3).Value
+            Cells(rownum, 11) = opening_price
+        End If
+        If Cells(i, 1) <> Cells(i + 1, 1) Then
+            closing_price = Cells(i, 6).Value
+            Cells(rownum, 12) = closing_price
+            Cells(rownum, 13) = closing_price - opening_price
+            If opening_price = 0 Then
+                Cells(rownum, 14) = "n/a"
+            Else
+                Cells(rownum, 14) = Format((closing_price - opening_price) / opening_price, Percent)
+            End If
+        End If
+    If Cells(i, 13) > 0 Then
+        Cells(i, 13).Interior.ColorIndex = 4
+        Else:
+        Cells(i, 13).Interior.ColorIndex = 3
+    End If
+    Next i
+
+Next w
+
+End Sub

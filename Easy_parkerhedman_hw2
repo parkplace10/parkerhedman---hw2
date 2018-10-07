@@ -1,0 +1,72 @@
+Sub easy()
+
+'declare variables
+
+Dim i As Variant, j As Variant, lastrow As Variant, rownum As Variant, total_volume As Variant
+
+Dim ws_count As Integer, w As Integer
+
+
+
+'get number of worksheets
+
+wscount = ThisWorkbook.Worksheets.Count
+
+
+
+'begin loop through worksheets
+
+For w = 1 To wscount
+
+Sheets(w).Activate
+
+
+
+'rownum keeps count of where to put unique values | lastrow is the last row of data in the worksheet
+
+rownum = 1
+
+lastrow = Cells(Rows.Count, 1).End(xlUp).Row
+
+
+
+
+
+'find unique ticker name values
+
+For i = 2 To lastrow
+
+    If Cells(i, 1) <> Cells(i - 1, 1) Then
+
+        Cells(rownum, 10) = total_volume
+        
+        rownum = rownum + 1
+
+        Cells(rownum, 9) = Cells(i, 1).Value
+        
+        total_volume = Cells(i, 7).Value
+    
+    Else
+        total_volume = total_volume + Cells(i, 7).Value
+
+    End If
+
+Next i
+Cells(1, 9).Value = "Ticker"
+
+Cells(1, 10).Value = "Total Stock Volume"
+
+Cells(1, 11).Value = "Opening Price"
+
+Cells(1, 12).Value = "Closing Price"
+
+Cells(1, 13).Value = "Total Change"
+
+Cells(1, 14).Value = "% Change"
+
+
+
+
+Next w
+
+End Sub
